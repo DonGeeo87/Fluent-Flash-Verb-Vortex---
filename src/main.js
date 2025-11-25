@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
         pauseBtn: document.getElementById('pauseBtn'),
         overlay: document.getElementById('gameOverlay'),
         overlayTitle: document.getElementById('overlayTitle'),
-        overlayMessage: document.getElementById('overlayMessage')
+        overlayMessage: document.getElementById('overlayMessage'),
+        overlayStartBtn: document.getElementById('overlayStartBtn')
     };
 
     // Verificar que todos los elementos existen
@@ -35,6 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Crear e inicializar el juego
     const game = new Game();
     game.init(elements);
+
+    // Conectar el botón del overlay para iniciar el juego
+    if (elements.overlayStartBtn) {
+        elements.overlayStartBtn.addEventListener('click', () => {
+            game.startGame();
+        });
+    }
 
     // Prevenir comportamiento por defecto de teclas en el input
     elements.gameInput.addEventListener('keydown', (e) => {
