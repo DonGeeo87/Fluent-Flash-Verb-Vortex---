@@ -14,20 +14,20 @@ export class PhraseGenerator {
 
         this.verbs = {
             pastSimple: {
-                regular: ['walked', 'played', 'studied', 'worked', 'helped', 'cooked', 'cleaned', 'watched'],
-                irregular: ['went', 'came', 'saw', 'took', 'gave', 'made', 'did', 'had', 'said', 'got', 'knew', 'thought']
+                regular: ['walked', 'played', 'studied', 'worked', 'helped', 'cooked', 'cleaned', 'watched', 'listened', 'talked'],
+                irregular: ['went', 'came', 'saw', 'took', 'gave', 'made', 'did', 'had', 'said', 'got', 'knew', 'thought', 'bought', 'brought']
             },
             presentPerfect: {
-                regular: ['has walked', 'have played', 'has studied', 'have worked'],
-                irregular: ['has gone', 'have come', 'has seen', 'have taken', 'has given', 'have made']
+                regular: ['walked', 'played', 'studied', 'worked', 'helped', 'cooked', 'cleaned', 'watched'],
+                irregular: ['gone', 'come', 'seen', 'taken', 'given', 'made', 'done', 'had', 'said', 'got', 'known', 'thought']
             },
             pastContinuous: {
-                regular: ['was walking', 'were playing', 'was studying', 'were working'],
-                irregular: ['was going', 'were coming', 'was seeing', 'were taking']
+                regular: ['walking', 'playing', 'studying', 'working', 'helping', 'cooking', 'cleaning', 'watching'],
+                irregular: ['going', 'coming', 'seeing', 'taking', 'giving', 'making', 'doing']
             },
             thirdConditional: {
-                regular: ['would have walked', 'would have played', 'would have studied'],
-                irregular: ['would have gone', 'would have come', 'would have seen', 'would have taken']
+                regular: ['walked', 'played', 'studied', 'worked'],
+                irregular: ['gone', 'come', 'seen', 'taken', 'given', 'made']
             }
         };
 
@@ -75,11 +75,36 @@ export class PhraseGenerator {
             },
             {
                 name: 'Third Conditional',
-                template: (s, v, o, c) => `If ${s} had known, ${s.toLowerCase()} ${v} ${o}${c ? ' ' + c : ''}.`,
+                template: null, // Se maneja de forma especial en generatePhrase
                 verbType: 'thirdConditional',
                 verbSubtype: 'irregular'
             }
         ];
+    }
+
+    /**
+     * Determina el auxiliar correcto según el sujeto
+     */
+    getAuxiliary(subject, tense) {
+        const subjectLower = subject.toLowerCase();
+        
+        // Sujetos en tercera persona singular (usa has/was)
+        const thirdPersonSingular = [
+            'he', 'she', 'it',
+            'the cat', 'the dog', 'the teacher', 'the student',
+            'her brother', 'my friend'
+        ];
+        
+        const isThirdPersonSingular = thirdPersonSingular.some(s => 
+            subjectLower === s.toLowerCase() || subjectLower.startsWith(s.toLowerCase() + ' ')
+        );
+        
+        if (tense === 'presentPerfect') {
+            return isThirdPersonSingular ? 'has' : 'have';
+        } else if (tense === 'pastContinuous') {
+            return isThirdPersonSingular ? 'was' : 'were';
+        }
+        return '';
     }
 
     /**
@@ -95,12 +120,27 @@ export class PhraseGenerator {
         const subject = this.getRandomElement(this.subjects);
         const verbType = this.verbs[pattern.verbType];
         const verbSubtype = verbType[pattern.verbSubtype] || verbType.regular || verbType.irregular;
-        const verb = this.getRandomElement(verbSubtype);
+        const verbBase = this.getRandomElement(verbSubtype);
         const object = this.getRandomElement(this.objects);
         const complement = Math.random() > 0.5 ? this.getRandomElement(this.complements) : null;
 
-        // Generar frase usando el template
-        const phrase = pattern.template(subject, verb, object, complement);
+        // Construir el verbo completo según el patrón
+        let verb = verbBase;
+        if (pattern.verbType === 'presentPerfect' || pattern.verbType === 'pastContinuous') {
+            const auxiliary = this.getAuxiliary(subject, pattern.verbType);
+            verb = `${auxiliary} ${verbBase}`;
+        } else if (pattern.verbType === 'thirdConditional') {
+            verb = `would have ${verbBase}`;
+        }
+
+        // Generar frase usando el template (o lógica especial para Third Conditional)
+        let phrase;
+        if (pattern.name === 'Third Conditional') {
+            const secondSubject = this.getSecondSubjectPronoun(subject);
+            phrase = `If ${subject} had known, ${secondSubject} ${verb} ${object}${complement ? ' ' + complement : ''}.`;
+        } else {
+            phrase = pattern.template(subject, verb, object, complement);
+        }
 
         return {
             phrase,
@@ -162,6 +202,23 @@ export class PhraseGenerator {
             'Third Conditional': 8
         };
         return difficultyMap[pattern.name] || 5;
+    }
+
+    /**
+     * Obtiene el pronombre apropiado para el segundo sujeto en Third Conditional
+     */
+    getSecondSubjectPronoun(subject) {
+        const subjectLower = subject.toLowerCase();
+        if (subjectLower === 'i') return 'I';
+        if (subjectLower === 'you') return 'you';
+        if (['he', 'the cat', 'the dog', 'the teacher', 'the student', 'her brother', 'my friend'].some(s => 
+            subjectLower.includes(s.toLowerCase()))) {
+            return 'he';
+        }
+        if (subjectLower === 'she') return 'she';
+        if (['we', 'our team'].some(s => subjectLower.includes(s.toLowerCase()))) return 'we';
+        if (['they', 'their family'].some(s => subjectLower.includes(s.toLowerCase()))) return 'they';
+        return 'they';
     }
 
     /**
