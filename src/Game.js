@@ -118,7 +118,7 @@ export class Game {
         this.stopVortexTimer();
         this.inputHandler.deactivate();
         this.updateUI();
-        this.showOverlay('Game Paused', 'Press Resume to continue');
+        this.showOverlay('⏸️ Juego Pausado', 'Haz clic en "Resume" para continuar\n\nO presiona el botón "Pause" nuevamente');
     }
 
     /**
@@ -156,6 +156,16 @@ export class Game {
         if (!this.elements.phraseDisplay) return;
 
         this.elements.phraseDisplay.innerHTML = '';
+        
+        if (!this.currentPhrase) {
+            // Mostrar mensaje cuando no hay frase
+            const placeholder = document.createElement('div');
+            placeholder.className = 'phrase-placeholder';
+            placeholder.innerHTML = '<p style="color: var(--text-secondary); font-size: 1.1rem;">Esperando frase...</p>';
+            this.elements.phraseDisplay.appendChild(placeholder);
+            return;
+        }
+
         const chars = this.currentPhrase.split('');
 
         chars.forEach((char, index) => {
@@ -165,6 +175,11 @@ export class Game {
             span.dataset.index = index;
             this.elements.phraseDisplay.appendChild(span);
         });
+        
+        // Marcar el primer carácter como actual
+        if (chars.length > 0) {
+            this.updateCharState(0, 'current');
+        }
     }
 
     /**
@@ -358,10 +373,37 @@ export class Game {
         const finalScore = this.score;
         const stats = this.difficultyManager.getStats();
 
-        this.showOverlay(
-            'Game Over',
-            `Final Score: ${finalScore}\n\nPatterns practiced: ${stats.patternsWithErrors}\nOverall difficulty: ${stats.overallDifficulty}/10`
-        );
+        const gameOverMessage = `
+            <div class="game-over-stats">
+                <p class="final-score">🎯 Puntuación Final: <strong>${finalScore}</strong></p>
+                <p>📚 Patrones practicados: <strong>${stats.patternsWithErrors}</strong></p>
+                <p>📊 Dificultad alcanzada: <strong>${stats.overallDifficulty}/10</strong></p>
+                ${stats.topProblemPatterns.length > 0 ? `
+                    <div class="problem-patterns">
+                        <p>🔍 Patrones para practicar más:</p>
+                        <ul>
+                            ${stats.topProblemPatterns.map(p => `<li>• ${p.pattern}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+        
+        this.showOverlay('🏁 Juego Terminado', gameOverMessage);
+
+        // Agregar botón de jugar de nuevo en el overlay
+        const overlayContent = this.elements.overlay?.querySelector('.overlay-content');
+        if (overlayContent && !overlayContent.querySelector('#gameOverRestartBtn')) {
+            const restartBtn = document.createElement('button');
+            restartBtn.id = 'gameOverRestartBtn';
+            restartBtn.className = 'btn btn-primary btn-large';
+            restartBtn.textContent = '🔄 Jugar de Nuevo';
+            restartBtn.style.marginTop = '24px';
+            restartBtn.addEventListener('click', () => {
+                this.startGame();
+            });
+            overlayContent.appendChild(restartBtn);
+        }
 
         // Habilitar botón de inicio
         if (this.elements.startBtn) {
@@ -399,15 +441,27 @@ export class Game {
     /**
      * Muestra el overlay con mensaje
      */
-    showOverlay(title, message) {
+    showOverlay(title, message, isInstructions = false) {
         if (this.elements.overlay) {
             this.elements.overlay.classList.remove('hidden');
+            
+            const overlayContent = this.elements.overlay.querySelector('.overlay-content');
+            
+            // Si es mensaje simple (no instrucciones), actualizar contenido
+            if (!isInstructions && overlayContent && this.elements.overlayMessage) {
+                // Si el mensaje contiene HTML, usar directamente
+                if (message.includes('<')) {
+                    this.elements.overlayMessage.innerHTML = message;
+                } else {
+                    // Formato simple para mensajes de texto plano
+                    this.elements.overlayMessage.innerHTML = message.split('\n').map(line => 
+                        line.trim() ? `<p style="margin: 8px 0;">${line}</p>` : ''
+                    ).join('');
+                }
+            }
         }
         if (this.elements.overlayTitle) {
             this.elements.overlayTitle.textContent = title;
-        }
-        if (this.elements.overlayMessage) {
-            this.elements.overlayMessage.textContent = message;
         }
     }
 

@@ -51,10 +51,72 @@
         </div>
 
         <div class="game-overlay" id="gameOverlay">
-            <div class="overlay-content">
-                <h2 id="overlayTitle">Ready to Begin</h2>
-                <p id="overlayMessage">Press Start to enter the Verb Vortex</p>
-                <button id="overlayStartBtn" class="btn btn-primary" style="margin-top: 24px;">Start Game</button>
+            <div class="overlay-content instructions-content">
+                <h2 id="overlayTitle">🎮 Cómo Jugar</h2>
+                <div id="overlayMessage" class="instructions-text">
+                    <div class="instruction-section">
+                        <h3>📝 Objetivo</h3>
+                        <p>Escribe la frase que aparece en pantalla, <strong>carácter por carácter</strong>, antes de que se agote el tiempo.</p>
+                    </div>
+                    
+                    <div class="instruction-section">
+                        <h3>⌨️ Cómo Escribir</h3>
+                        <ul class="instruction-list">
+                            <li>Escribe <strong>exactamente</strong> como aparece, incluyendo espacios y puntuación</li>
+                            <li>Si cometes un error, el carácter se marca en <span class="error-example">rojo</span></li>
+                            <li>Debes corregir el error antes de continuar</li>
+                            <li>Usa <kbd>Backspace</kbd> para retroceder si es necesario</li>
+                        </ul>
+                    </div>
+
+                    <div class="instruction-section">
+                        <h3>⏱️ El Vórtice</h3>
+                        <p>El círculo verde alrededor de la frase es tu temporizador. Se vuelve más intenso cuando el tiempo se agota.</p>
+                    </div>
+
+                    <div class="instruction-section">
+                        <h3>📊 Puntuación</h3>
+                        <ul class="instruction-list">
+                            <li><strong>Score:</strong> Puntos totales acumulados</li>
+                            <li><strong>Lives:</strong> Tienes 3 vidas. Pierdes una si se agota el tiempo</li>
+                            <li><strong>Streak:</strong> Rachas de frases completadas correctamente</li>
+                        </ul>
+                    </div>
+
+                    <div class="instruction-section example-section">
+                        <h3>💡 Ejemplo</h3>
+                        <div class="example-box">
+                            <p class="example-phrase">
+                                <span class="phrase-char correct">I</span>
+                                <span class="phrase-char correct"> </span>
+                                <span class="phrase-char correct">w</span>
+                                <span class="phrase-char correct">a</span>
+                                <span class="phrase-char correct">l</span>
+                                <span class="phrase-char correct">k</span>
+                                <span class="phrase-char correct">e</span>
+                                <span class="phrase-char correct">d</span>
+                                <span class="phrase-char current"> </span>
+                                <span class="phrase-char pending">t</span>
+                                <span class="phrase-char pending">h</span>
+                                <span class="phrase-char pending">e</span>
+                                <span class="phrase-char pending"> </span>
+                                <span class="phrase-char pending">d</span>
+                                <span class="phrase-char pending">o</span>
+                                <span class="phrase-char pending">g</span>
+                                <span class="phrase-char pending">.</span>
+                            </p>
+                            <p class="example-explanation">
+                                <span class="correct">Verde</span> = Correcto | 
+                                <span class="current">Amarillo</span> = Siguiente carácter | 
+                                <span class="pending">Gris</span> = Pendiente
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="instruction-section">
+                        <button id="overlayStartBtn" class="btn btn-primary btn-large">🚀 Comenzar Juego</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
