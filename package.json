@@ -1,0 +1,30 @@
+{
+  "name": "fluent-flash-verb-vortex",
+  "version": "1.0.0",
+  "description": "Un juego web minimalista para practicar mecanografía y gramática del idioma inglés",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "game",
+    "typing",
+    "english",
+    "grammar",
+    "education"
+  ],
+  "author": "Giorgio Interdonato Palacios",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DonGeeo87/FluentFlash"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
+
