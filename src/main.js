@@ -20,7 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay: document.getElementById('gameOverlay'),
         overlayTitle: document.getElementById('overlayTitle'),
         overlayMessage: document.getElementById('overlayMessage'),
-        overlayStartBtn: document.getElementById('overlayStartBtn')
+        overlayStartBtn: document.getElementById('overlayStartBtn'),
+        levelBadge: document.getElementById('levelBadge'),
+        timerCountdown: document.getElementById('timerCountdown'),
+        timerBarFill: document.getElementById('timerBarFill')
     };
 
     // Verificar que todos los elementos existen

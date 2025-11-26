@@ -47,6 +47,49 @@ export class PhraseGenerator {
             'to', 'from', 'with', 'for', 'about', 'at', 'in', 'on'
         ];
 
+        this.curatedPhrases = {
+            'Past Simple Regular': [
+                'She walked along the riverside at sunrise yesterday.',
+                'We studied the entire handbook before the big test.',
+                'They cleaned the workshop carefully after the event.',
+                'My friend cooked a comforting soup for the whole family.',
+                'The teacher helped every student during the lab session.',
+                'I worked on the presentation until midnight.'
+            ],
+            'Past Simple Irregular': [
+                'He went to the music festival last weekend.',
+                'They took the last train home before the storm.',
+                'She saw the northern lights during her trip.',
+                'We made a detailed plan for the expedition.',
+                'My friend brought fresh flowers to the meeting.',
+                'The team came prepared despite the delay.'
+            ],
+            'Present Perfect': [
+                'They have completed the robotics project successfully.',
+                'She has written three songs about the same city.',
+                'We have visited the new art gallery twice this month.',
+                'I have kept every ticket from our travels.',
+                'He has repaired the vintage radio with patience.',
+                'Our team has achieved all the quarterly goals.'
+            ],
+            'Past Continuous': [
+                'Her brother was playing the piano this morning.',
+                'We were studying for the chemistry exam at midnight.',
+                'I was working on the launch checklist all afternoon.',
+                'The students were practicing their speeches backstage.',
+                'They were cooking a giant paella for the neighbors.',
+                'She was reading the mystery novel by the fireplace.'
+            ],
+            'Third Conditional': [
+                'If I had known about the storm, I would have taken an earlier train.',
+                'If she had saved the file, she would have avoided the lost work.',
+                'If they had checked the map, they would have found the shortcut.',
+                'If we had booked the tickets sooner, we would have sat together.',
+                'If he had trained harder, he would have won the championship.',
+                'If the team had shared the update, everyone would have stayed calm.'
+            ]
+        };
+
         // Patrones gramaticales disponibles
         this.grammarPatterns = [
             {
@@ -116,7 +159,18 @@ export class PhraseGenerator {
         // Seleccionar patrón basado en dificultad adaptativa
         const pattern = this.selectPatternByDifficulty(errorCounts);
         
-        // Seleccionar componentes aleatorios
+        // Usar frases curadas si están disponibles para garantizar ortografía y gramática
+        const curatedList = this.curatedPhrases[pattern.name];
+        if (curatedList && curatedList.length > 0) {
+            const curatedPhrase = this.getRandomElement(curatedList);
+            return {
+                phrase: curatedPhrase,
+                pattern: pattern.name,
+                difficulty: this.calculateDifficulty(pattern, errorCounts)
+            };
+        }
+
+        // Seleccionar componentes aleatorios (fallback legacy)
         const subject = this.getRandomElement(this.subjects);
         const verbType = this.verbs[pattern.verbType];
         const verbSubtype = verbType[pattern.verbSubtype] || verbType.regular || verbType.irregular;

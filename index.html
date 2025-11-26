@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fluent Flash: The Verb Vortex</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -26,6 +29,16 @@
             <div class="stat-item">
                 <span class="stat-label">Streak:</span>
                 <span id="streak" class="stat-value">0</span>
+            </div>
+        </div>
+
+        <div class="timer-panel">
+            <div class="timer-info">
+                <span class="level-chip" id="levelBadge">Nivel 1</span>
+                <span class="timer-countdown" id="timerCountdown">30s</span>
+            </div>
+            <div class="timer-bar">
+                <div class="timer-bar-fill" id="timerBarFill"></div>
             </div>
         </div>
 

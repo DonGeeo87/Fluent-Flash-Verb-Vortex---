@@ -21,6 +21,12 @@ export class Game {
         this.score = 0;
         this.lives = 3;
         this.streak = 0;
+        this.level = 1;
+        this.completedPhrases = 0;
+        this.phrasesPerLevel = 3;
+        this.baseVortexTime = 28000;
+        this.levelTimeDecay = 1500;
+        this.minVortexTime = 8000;
         this.currentPhrase = null;
         this.currentPhraseData = null;
         this.startTime = null;
@@ -39,7 +45,10 @@ export class Game {
             pauseBtn: null,
             overlay: null,
             overlayTitle: null,
-            overlayMessage: null
+            overlayMessage: null,
+            levelBadge: null,
+            timerCountdown: null,
+            timerBarFill: null
         };
 
         // Callbacks para actualización de UI
@@ -89,9 +98,13 @@ export class Game {
         this.score = 0;
         this.lives = 3;
         this.streak = 0;
+        this.level = 1;
+        this.completedPhrases = 0;
+        this.vortexTimeLimit = this.getTimeLimitForLevel();
         this.difficultyManager.reset();
 
         this.updateUI();
+        this.updateTimerUI(this.vortexTimeLimit);
         this.hideOverlay();
         this.generateNewPhrase();
         this.inputHandler.activate();
@@ -143,6 +156,8 @@ export class Game {
         this.currentPhrase = phraseData.phrase;
         this.currentPhraseData = phraseData;
         this.startTime = Date.now();
+        this.vortexTimeLimit = this.getTimeLimitForLevel();
+        this.updateTimerUI(this.vortexTimeLimit);
 
         this.renderPhrase();
         this.startVortexTimer();
@@ -263,6 +278,8 @@ export class Game {
 
         this.score += points;
         this.streak++;
+        this.completedPhrases++;
+        this.updateLevelProgress();
         this.audioSynthesizer.playSuccessSweep(200, 800, 0.3);
 
         this.stopVortexTimer();
@@ -296,6 +313,7 @@ export class Game {
             const progress = remaining / this.vortexTimeLimit;
 
             this.updateVortexVisual(progress);
+            this.updateTimerBar(progress, remaining);
 
             // Advertencia cuando queda poco tiempo
             if (remaining < 5000 && remaining > 0 && Math.floor(remaining / 500) !== Math.floor((remaining + updateInterval) / 500)) {
@@ -325,13 +343,88 @@ export class Game {
     updateVortexVisual(progress) {
         if (!this.elements.vortexRing) return;
 
-        const opacity = 0.3 + (1 - progress) * 0.7;
-        const scale = 1 + (1 - progress) * 0.2;
-        const colorIntensity = Math.min(255, 136 + (1 - progress) * 119);
+        const opacity = 0.5 + (1 - progress) * 0.4;
+        const scale = 1 + (1 - progress) * 0.15;
+        const glow = 40 + (1 - progress) * 40;
 
         this.elements.vortexRing.style.opacity = opacity;
-        this.elements.vortexRing.style.transform = `scale(${scale})`;
-        this.elements.vortexRing.style.boxShadow = `0 0 ${30 + (1 - progress) * 50}px rgba(0, ${colorIntensity}, 136, ${opacity})`;
+        this.elements.vortexRing.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        this.elements.vortexRing.style.boxShadow = `0 0 ${glow}px rgba(127, 90, 240, ${opacity})`;
+    }
+
+    /**
+     * Retorna el tiempo disponible según el nivel actual
+     */
+    getTimeLimitForLevel() {
+        const decay = (this.level - 1) * this.levelTimeDecay;
+        return Math.max(this.minVortexTime, this.baseVortexTime - decay);
+    }
+
+    /**
+     * Actualiza la barra de progreso y etiquetas del temporizador
+     */
+    updateTimerBar(progress, remaining) {
+        const clamped = Math.max(0, Math.min(1, progress));
+
+        if (this.elements.timerBarFill) {
+            this.elements.timerBarFill.style.width = `${clamped * 100}%`;
+
+            if (clamped < 0.2) {
+                this.elements.timerBarFill.classList.add('danger');
+            } else {
+                this.elements.timerBarFill.classList.remove('danger');
+            }
+        }
+
+        if (this.elements.timerCountdown) {
+            this.elements.timerCountdown.textContent = `${Math.max(0, Math.ceil(remaining / 1000))}s`;
+        }
+    }
+
+    /**
+     * Restablece el temporizador visual cuando comienza una nueva frase
+     */
+    updateTimerUI(totalMs) {
+        if (this.elements.timerCountdown) {
+            this.elements.timerCountdown.textContent = `${Math.ceil(totalMs / 1000)}s`;
+        }
+        if (this.elements.timerBarFill) {
+            this.elements.timerBarFill.classList.remove('danger');
+            this.elements.timerBarFill.style.width = '100%';
+        }
+    }
+
+    /**
+     * Gestiona la progresión de niveles en base a frases completadas
+     */
+    updateLevelProgress() {
+        const nextLevel = Math.floor(this.completedPhrases / this.phrasesPerLevel) + 1;
+        if (nextLevel !== this.level) {
+            this.level = nextLevel;
+            this.flashLevelBadge();
+        }
+        this.updateLevelDisplay();
+    }
+
+    /**
+     * Actualiza la etiqueta de nivel
+     */
+    updateLevelDisplay() {
+        if (this.elements.levelBadge) {
+            this.elements.levelBadge.textContent = `Nivel ${this.level}`;
+        }
+    }
+
+    /**
+     * Efecto visual cuando se sube de nivel
+     */
+    flashLevelBadge() {
+        if (this.elements.levelBadge) {
+            this.elements.levelBadge.classList.remove('level-pop');
+            // Reflow para reiniciar la animación
+            void this.elements.levelBadge.offsetWidth;
+            this.elements.levelBadge.classList.add('level-pop');
+        }
     }
 
     /**
@@ -433,6 +526,8 @@ export class Game {
             this.elements.pauseBtn.disabled = this.state !== 'playing' && this.state !== 'paused';
             this.elements.pauseBtn.textContent = this.state === 'paused' ? 'Resume' : 'Pause';
         }
+
+        this.updateLevelDisplay();
 
         // Ejecutar callbacks de actualización
         this.uiUpdateCallbacks.forEach(callback => callback(this));
