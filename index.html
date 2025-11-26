@@ -54,66 +54,55 @@
             <div class="overlay-content instructions-content">
                 <h2 id="overlayTitle">🎮 Cómo Jugar</h2>
                 <div id="overlayMessage" class="instructions-text">
-                    <div class="instruction-section">
-                        <h3>📝 Objetivo</h3>
-                        <p>Escribe la frase que aparece en pantalla, <strong>carácter por carácter</strong>, antes de que se agote el tiempo.</p>
+                    <div class="tutorial-grid">
+                        <article class="tutorial-card">
+                            <div class="card-icon">🌀</div>
+                            <h3>1. Sintoniza</h3>
+                            <p>Lee la frase completa, siente el ritmo y prepárate para disparar tus dedos.</p>
+                        </article>
+                        <article class="tutorial-card">
+                            <div class="card-icon">⌨️</div>
+                            <h3>2. Replica</h3>
+                            <p>Escribe <strong>exactamente</strong> lo que ves. Espacios, comas y puntos cuentan.</p>
+                        </article>
+                        <article class="tutorial-card">
+                            <div class="card-icon">⚡</div>
+                            <h3>3. Mantén la racha</h3>
+                            <p>Corrige con <kbd>Backspace</kbd> si fallas y no pierdas el pulso del vórtice.</p>
+                        </article>
                     </div>
-                    
-                    <div class="instruction-section">
-                        <h3>⌨️ Cómo Escribir</h3>
-                        <ul class="instruction-list">
-                            <li>Escribe <strong>exactamente</strong> como aparece, incluyendo espacios y puntuación</li>
-                            <li>Si cometes un error, el carácter se marca en <span class="error-example">rojo</span></li>
-                            <li>Debes corregir el error antes de continuar</li>
-                            <li>Usa <kbd>Backspace</kbd> para retroceder si es necesario</li>
+
+                    <div class="quick-tips">
+                        <h3>Tips Express</h3>
+                        <ul class="instruction-list compact-list">
+                            <li><span class="tip-label">Timer:</span> El anillo verde late más rápido cuando estás a segundos de perder.</li>
+                            <li><span class="tip-label">Errores:</span> Letras en <span class="error-example">rojo</span> esperan corrección inmediata.</li>
+                            <li><span class="tip-label">Streak:</span> Cada frase perfecta sube el multiplicador.</li>
                         </ul>
                     </div>
 
-                    <div class="instruction-section">
-                        <h3>⏱️ El Vórtice</h3>
-                        <p>El círculo verde alrededor de la frase es tu temporizador. Se vuelve más intenso cuando el tiempo se agota.</p>
+                    <div class="legend-strip">
+                        <span class="legend-chip chip-correct">✔ Perfecto</span>
+                        <span class="legend-chip chip-current">➤ Objetivo</span>
+                        <span class="legend-chip chip-pending">… Pendiente</span>
                     </div>
 
-                    <div class="instruction-section">
-                        <h3>📊 Puntuación</h3>
-                        <ul class="instruction-list">
-                            <li><strong>Score:</strong> Puntos totales acumulados</li>
-                            <li><strong>Lives:</strong> Tienes 3 vidas. Pierdes una si se agota el tiempo</li>
-                            <li><strong>Streak:</strong> Rachas de frases completadas correctamente</li>
-                        </ul>
-                    </div>
-
-                    <div class="instruction-section example-section">
-                        <h3>💡 Ejemplo</h3>
-                        <div class="example-box">
-                            <p class="example-phrase">
-                                <span class="phrase-char correct">I</span>
-                                <span class="phrase-char correct"> </span>
-                                <span class="phrase-char correct">w</span>
-                                <span class="phrase-char correct">a</span>
-                                <span class="phrase-char correct">l</span>
-                                <span class="phrase-char correct">k</span>
-                                <span class="phrase-char correct">e</span>
-                                <span class="phrase-char correct">d</span>
-                                <span class="phrase-char current"> </span>
-                                <span class="phrase-char pending">t</span>
-                                <span class="phrase-char pending">h</span>
-                                <span class="phrase-char pending">e</span>
-                                <span class="phrase-char pending"> </span>
-                                <span class="phrase-char pending">d</span>
-                                <span class="phrase-char pending">o</span>
-                                <span class="phrase-char pending">g</span>
-                                <span class="phrase-char pending">.</span>
-                            </p>
-                            <p class="example-explanation">
-                                <span class="correct">Verde</span> = Correcto | 
-                                <span class="current">Amarillo</span> = Siguiente carácter | 
-                                <span class="pending">Gris</span> = Pendiente
-                            </p>
+                    <div class="mini-stats-row">
+                        <div class="mini-stat">
+                            <p class="mini-label">Score</p>
+                            <p class="mini-desc">Suma total. Cada letra a tiempo vale.</p>
+                        </div>
+                        <div class="mini-stat">
+                            <p class="mini-label">Lives</p>
+                            <p class="mini-desc">3 corazones. El tiempo agotado consume uno.</p>
+                        </div>
+                        <div class="mini-stat">
+                            <p class="mini-label">Streak</p>
+                            <p class="mini-desc">Racha activa para bonus de velocidad.</p>
                         </div>
                     </div>
 
-                    <div class="instruction-section">
+                    <div class="overlay-actions">
                         <button id="overlayStartBtn" class="btn btn-primary btn-large">🚀 Comenzar Juego</button>
                     </div>
                 </div>
