@@ -1,4 +1,4 @@
-# 🚀 Guía de Deploy en Vercel
+# 🚀 Guía de Deploy de The GG Arcade en Vercel
 
 ## Deploy Rápido (5 minutos)
 
@@ -14,7 +14,7 @@ git init
 git add .
 
 # Hacer commit inicial
-git commit -m "Initial commit: Fluent Flash - The Verb Vortex"
+git commit -m "Initial commit: The GG Arcade"
 
 # Crear rama main
 git branch -M main
@@ -58,7 +58,7 @@ vercel
 # - ¿Set up and deploy? Y
 # - ¿Which scope? (tu cuenta)
 # - ¿Link to existing project? N
-# - ¿Project name? fluent-flash (o el que prefieras)
+# - ¿Project name? the-gg-arcade (o el que prefieras)
 # - ¿Directory? ./
 # - ¿Override settings? N
 
@@ -68,7 +68,7 @@ vercel --prod
 
 ### Paso 3: Verificar el Deploy
 
-1. Vercel te dará una URL como: `https://fluent-flash-xxx.vercel.app`
+1. Vercel te dará una URL como: `https://the-gg-arcade-xxx.vercel.app`
 2. Abre la URL en tu navegador
 3. Prueba el juego:
    - Haz clic en "Start Game"

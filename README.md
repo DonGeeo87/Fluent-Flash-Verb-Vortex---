@@ -1,6 +1,6 @@
-# Fluent Flash: The Verb Vortex
+# The GG Arcade: The Grammar Game Arcade
 
-Un juego web minimalista de alto rendimiento para practicar mecanografía y gramática del idioma inglés, centrado en estructuras verbales.
+Colección de minijuegos web de alto rendimiento para practicar mecanografía y gramática del idioma inglés. El primer modo disponible es **Verb Vortex**, centrado en estructuras verbales.
 
 ## 🎯 Características
 
@@ -17,7 +17,7 @@ Un juego web minimalista de alto rendimiento para practicar mecanografía y gram
 
 1. Clona o descarga el proyecto
 2. Abre `index.html` en un navegador moderno
-3. Haz clic en "Start Game" para comenzar
+3. Desde el home de **The GG Arcade**, elige el modo que quieras jugar
 
 **Nota**: El audio requiere interacción del usuario (política del navegador), por lo que se inicializa al iniciar el juego.
 
@@ -29,9 +29,9 @@ Un juego web minimalista de alto rendimiento para practicar mecanografía y gram
    ```bash
    git init
    git add .
-   git commit -m "Initial commit: Fluent Flash game"
+   git commit -m "Initial commit: The GG Arcade"
    git branch -M main
-   git remote add origin https://github.com/tu-usuario/FluentFlash.git
+   git remote add origin https://github.com/tu-usuario/TheGGArcade.git
    git push -u origin main
    ```
 
@@ -79,7 +79,7 @@ No se requiere build step, Vercel sirve los archivos directamente.
 ## 📁 Estructura del Proyecto
 
 ```
-FluentFlash/
+TheGGArcade/
 ├── index.html              # Estructura HTML principal
 ├── style.css               # Estilos minimalistas tipo terminal
 ├── vercel.json             # Configuración de Vercel

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluent Flash: The Verb Vortex</title>
+    <title>The GG Arcade: The Grammar Game Arcade</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,61 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
+    <!-- Home Screen -->
+    <div id="homeScreen" class="home-container">
+        <header class="home-header">
+            <p class="home-eyebrow">Arcade de inglés</p>
+            <h1 class="home-title">THE GG ARCADE</h1>
+            <p class="home-subtitle">The Grammar Game Arcade para practicar mientras juegas.</p>
+        </header>
+
+        <section class="home-player">
+            <label for="nicknameInput" class="home-label">Apodo</label>
+            <input id="nicknameInput" class="home-input" type="text" maxlength="16" placeholder="Ej: VerbNinja" autocomplete="off" />
+            <p class="home-hint">Solo se usará para la tabla de puntajes en este dispositivo.</p>
+        </section>
+
+        <section class="home-modes">
+            <h2 class="home-section-title">Juegos</h2>
+            <div class="mode-grid">
+                <article class="mode-card">
+                    <h3>⚡ Verb Vortex</h3>
+                    <p>Escribe frases relámpago y mantén la racha antes de que el tiempo se agote.</p>
+                    <button id="homeStartVerbBtn" class="btn btn-primary btn-large">Jugar Verb Vortex</button>
+                </article>
+                <article class="mode-card">
+                    <h3>🧱 Word Drop (Tetris)</h3>
+                    <p>Palabras que caen: tipea antes de que toquen el piso.</p>
+                    <button id="homeStartWordDropBtn" class="btn btn-secondary btn-large">Jugar Word Drop</button>
+                </article>
+                <article class="mode-card">
+                    <h3>🧩 Sentence Builder Rush</h3>
+                    <p>Ordena tarjetas de palabras para formar oraciones correctas lo más rápido posible.</p>
+                    <button id="homeStartSentenceBtn" class="btn btn-secondary btn-large">Jugar Sentence Builder</button>
+                </article>
+                <article class="mode-card">
+                    <h3>🧪 Verb Lab</h3>
+                    <p>Elige la tarjeta con la forma verbal correcta antes de que se agote el tiempo.</p>
+                    <button id="homeStartVerbLabBtn" class="btn btn-secondary btn-large">Jugar Verb Lab</button>
+                </article>
+                <article class="mode-card">
+                    <h3>🧠 Grammar Memory Match</h3>
+                    <p>Encuentra las parejas gramaticales volteando tarjetas antes de que se acabe el tiempo.</p>
+                    <button id="homeStartMemoryBtn" class="btn btn-secondary btn-large">Jugar Memory Match</button>
+                </article>
+            </div>
+        </section>
+
+        <section class="home-leaderboard">
+            <h2 class="home-section-title">Últimos puntajes</h2>
+            <ul id="leaderboardList" class="leaderboard-list">
+                <!-- Se rellena desde JS -->
+            </ul>
+        </section>
+    </div>
+
+    <!-- Verb Vortex Screen -->
+    <div id="verbVortexScreen" class="game-container hidden">
         <header class="game-header">
             <h1 class="game-title">FLUENT FLASH</h1>
             <p class="game-subtitle">The Verb Vortex</p>
@@ -120,6 +174,169 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Word Drop Screen -->
+    <div id="wordDropScreen" class="game-container hidden">
+        <header class="game-header">
+            <h1 class="game-title">WORD DROP</h1>
+            <p class="game-subtitle">Tipea las palabras antes de que toquen el piso</p>
+        </header>
+
+        <div class="game-stats">
+            <div class="stat-item">
+                <span class="stat-label">Score:</span>
+                <span id="wdScore" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Lives:</span>
+                <span id="wdLives" class="stat-value">3</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Level:</span>
+                <span id="wdLevel" class="stat-value">1</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Streak:</span>
+                <span id="wdStreak" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">x Mult:</span>
+                <span id="wdMultiplier" class="stat-value">1</span>
+            </div>
+        </div>
+
+        <div class="worddrop-grid" id="wordDropGrid"></div>
+
+        <div class="input-container">
+            <input
+                type="text"
+                id="wordDropInput"
+                class="game-input"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="Escribe una palabra y presiona Enter..."
+            >
+        </div>
+
+        <div class="game-controls">
+            <button id="wordDropStartBtn" class="btn btn-primary">Start</button>
+            <button id="wordDropBackBtn" class="btn btn-secondary">Home</button>
+        </div>
+    </div>
+
+    <!-- Sentence Builder Screen -->
+    <div id="sentenceScreen" class="game-container hidden">
+        <header class="game-header">
+            <h1 class="game-title">SENTENCE BUILDER RUSH</h1>
+            <p class="game-subtitle">Toca las tarjetas en el orden correcto para formar la frase</p>
+        </header>
+
+        <div class="game-stats">
+            <div class="stat-item">
+                <span class="stat-label">Score:</span>
+                <span id="sbScore" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Streak:</span>
+                <span id="sbStreak" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Tiempo:</span>
+                <span class="stat-value">20s</span>
+            </div>
+        </div>
+
+        <div class="sb-target-box">
+            <p id="sbTargetSentence" class="sb-target-sentence">Pulsa "Start" para comenzar.</p>
+            <div class="sb-timer-track">
+                <div id="sbTimerFill" class="sb-timer-fill"></div>
+            </div>
+        </div>
+
+        <div class="sb-assembled" id="sbAssembledSentence"></div>
+
+        <div class="sb-word-pool" id="sbWordPool"></div>
+
+        <div class="game-controls">
+            <button id="sbStartBtn" class="btn btn-primary">Start</button>
+            <button id="sbNextBtn" class="btn btn-secondary hidden">Siguiente</button>
+            <button id="sbBackBtn" class="btn btn-secondary">Home</button>
+        </div>
+    </div>
+
+    <!-- Verb Lab Screen -->
+    <div id="verbLabScreen" class="game-container hidden">
+        <header class="game-header">
+            <h1 class="game-title">VERB LAB</h1>
+            <p class="game-subtitle">Toca la forma correcta del verbo antes de que se acabe el tiempo</p>
+        </header>
+
+        <div class="game-stats">
+            <div class="stat-item">
+                <span class="stat-label">Score:</span>
+                <span id="vlScore" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Streak:</span>
+                <span id="vlStreak" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Tiempo:</span>
+                <span class="stat-value">12s</span>
+            </div>
+        </div>
+
+        <div class="vl-prompt-box">
+            <p id="vlPrompt" class="vl-prompt-text">Pulsa "Start" para comenzar.</p>
+            <div class="vl-timer-track">
+                <div id="vlTimerFill" class="vl-timer-fill"></div>
+            </div>
+        </div>
+
+        <div class="vl-options" id="vlOptions"></div>
+
+        <div class="game-controls">
+            <button id="vlStartBtn" class="btn btn-primary">Start</button>
+            <button id="vlNextBtn" class="btn btn-secondary hidden">Siguiente</button>
+            <button id="vlBackBtn" class="btn btn-secondary">Home</button>
+        </div>
+    </div>
+
+    <!-- Grammar Memory Match Screen -->
+    <div id="memoryScreen" class="game-container hidden">
+        <header class="game-header">
+            <h1 class="game-title">GRAMMAR MEMORY MATCH</h1>
+            <p class="game-subtitle">Encuentra las parejas gramaticales volteando tarjetas</p>
+        </header>
+
+        <div class="game-stats">
+            <div class="stat-item">
+                <span class="stat-label">Score:</span>
+                <span id="gmScore" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Streak:</span>
+                <span id="gmStreak" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Matches:</span>
+                <span id="gmMatches" class="stat-value">0/8</span>
+            </div>
+        </div>
+
+        <div class="gm-timer-box">
+            <div class="gm-timer-track">
+                <div id="gmTimerFill" class="gm-timer-fill"></div>
+            </div>
+        </div>
+
+        <div class="gm-grid" id="gmGrid"></div>
+
+        <div class="game-controls">
+            <button id="gmStartBtn" class="btn btn-primary">Start</button>
+            <button id="gmBackBtn" class="btn btn-secondary">Home</button>
         </div>
     </div>
 

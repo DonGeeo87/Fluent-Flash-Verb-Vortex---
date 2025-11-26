@@ -47,46 +47,59 @@ export class PhraseGenerator {
             'to', 'from', 'with', 'for', 'about', 'at', 'in', 'on'
         ];
 
+        // Frases curadas super cortas (1-6 palabras) pensadas para ritmo rápido
         this.curatedPhrases = {
             'Past Simple Regular': [
-                'She walked along the riverside at sunrise yesterday.',
-                'We studied the entire handbook before the big test.',
-                'They cleaned the workshop carefully after the event.',
-                'My friend cooked a comforting soup for the whole family.',
-                'The teacher helped every student during the lab session.',
-                'I worked on the presentation until midnight.'
+                'She walked home.',
+                'We played outside.',
+                'They cleaned everything.',
+                'I studied English.',
+                'The student worked hard.',
+                'My friend cooked dinner.',
+                'We watched a movie.',
+                'They helped us.',
+                'He walked the dog.',
+                'She cleaned her room.'
             ],
             'Past Simple Irregular': [
-                'He went to the music festival last weekend.',
-                'They took the last train home before the storm.',
-                'She saw the northern lights during her trip.',
-                'We made a detailed plan for the expedition.',
-                'My friend brought fresh flowers to the meeting.',
-                'The team came prepared despite the delay.'
+                'He went home early.',
+                'She saw the movie.',
+                'They took the bus.',
+                'We made a cake.',
+                'I bought a book.',
+                'They came late.',
+                'She had a test.',
+                'We got the prize.',
+                'He knew the answer.',
+                'They said hello.'
             ],
             'Present Perfect': [
-                'They have completed the robotics project successfully.',
-                'She has written three songs about the same city.',
-                'We have visited the new art gallery twice this month.',
-                'I have kept every ticket from our travels.',
-                'He has repaired the vintage radio with patience.',
-                'Our team has achieved all the quarterly goals.'
+                'I have finished.',
+                'She has arrived.',
+                'They have left.',
+                'We have tried.',
+                'He has studied a lot.',
+                'They have played well.',
+                'We have walked enough.',
+                'She has cooked dinner.'
             ],
             'Past Continuous': [
-                'Her brother was playing the piano this morning.',
-                'We were studying for the chemistry exam at midnight.',
-                'I was working on the launch checklist all afternoon.',
-                'The students were practicing their speeches backstage.',
-                'They were cooking a giant paella for the neighbors.',
-                'She was reading the mystery novel by the fireplace.'
+                'I was reading.',
+                'She was sleeping.',
+                'They were running.',
+                'We were talking.',
+                'The student was writing.',
+                'They were playing chess.',
+                'He was cooking lunch.',
+                'We were studying.'
             ],
             'Third Conditional': [
-                'If I had known about the storm, I would have taken an earlier train.',
-                'If she had saved the file, she would have avoided the lost work.',
-                'If they had checked the map, they would have found the shortcut.',
-                'If we had booked the tickets sooner, we would have sat together.',
-                'If he had trained harder, he would have won the championship.',
-                'If the team had shared the update, everyone would have stayed calm.'
+                'If I had known earlier.',
+                'If she had studied more.',
+                'If they had left earlier.',
+                'If we had seen it.',
+                'If he had tried harder.',
+                'If we had called you.'
             ]
         };
 

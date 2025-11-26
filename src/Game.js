@@ -27,6 +27,8 @@ export class Game {
         this.baseVortexTime = 28000;
         this.levelTimeDecay = 1500;
         this.minVortexTime = 8000;
+        this.playerName = 'Player';
+        this.modeName = 'Verb Vortex';
         this.currentPhrase = null;
         this.currentPhraseData = null;
         this.startTime = null;
@@ -71,6 +73,18 @@ export class Game {
 
         // Actualizar UI inicial
         this.updateUI();
+    }
+
+    /**
+     * Configura el perfil del jugador (nombre y modo)
+     */
+    setPlayerProfile(name, mode = 'Verb Vortex') {
+        if (name) {
+            this.playerName = name;
+        }
+        if (mode) {
+            this.modeName = mode;
+        }
     }
 
     /**
@@ -131,7 +145,19 @@ export class Game {
         this.stopVortexTimer();
         this.inputHandler.deactivate();
         this.updateUI();
-        this.showOverlay('⏸️ Juego Pausado', 'Haz clic en "Resume" para continuar\n\nO presiona el botón "Pause" nuevamente');
+        this.showOverlay('⏸️ Juego Pausado', 'Haz clic en el botón para seguir jugando.');
+
+        // Agregar botón de reanudar sobre el overlay
+        const overlayContent = this.elements.overlay?.querySelector('.overlay-content');
+        if (overlayContent && !overlayContent.querySelector('#pauseResumeBtn')) {
+            const resumeBtn = document.createElement('button');
+            resumeBtn.id = 'pauseResumeBtn';
+            resumeBtn.className = 'btn btn-primary btn-large';
+            resumeBtn.textContent = '▶ Resume';
+            resumeBtn.style.marginTop = '24px';
+            resumeBtn.addEventListener('click', () => this.resumeGame());
+            overlayContent.appendChild(resumeBtn);
+        }
     }
 
     /**
@@ -465,6 +491,7 @@ export class Game {
 
         const finalScore = this.score;
         const stats = this.difficultyManager.getStats();
+        this.saveScoreToLeaderboard(finalScore);
 
         const gameOverMessage = `
             <div class="game-over-stats">
@@ -501,6 +528,33 @@ export class Game {
         // Habilitar botón de inicio
         if (this.elements.startBtn) {
             this.elements.startBtn.textContent = 'Play Again';
+        }
+    }
+
+    /**
+     * Guarda la puntuación en la tabla local de puntajes
+     */
+    saveScoreToLeaderboard(score) {
+        try {
+            const raw = localStorage.getItem('fluentFlash_leaderboard');
+            const list = raw ? JSON.parse(raw) : [];
+
+            list.push({
+                name: this.playerName || 'Player',
+                score,
+                mode: this.modeName || 'Verb Vortex',
+                date: new Date().toISOString()
+            });
+
+            list.sort((a, b) => b.score - a.score);
+            const top = list.slice(0, 20);
+            localStorage.setItem('fluentFlash_leaderboard', JSON.stringify(top));
+
+            if (typeof window !== 'undefined' && window.fluentFlashRefreshLeaderboard) {
+                window.fluentFlashRefreshLeaderboard();
+            }
+        } catch (error) {
+            console.warn('Failed to save leaderboard score:', error);
         }
     }
 
@@ -554,9 +608,45 @@ export class Game {
                     ).join('');
                 }
             }
+
+            // Asegurar botón de volver al inicio en casi todos los overlays
+            if (overlayContent && !overlayContent.querySelector('#homeBtn')) {
+                const homeBtn = document.createElement('button');
+                homeBtn.id = 'homeBtn';
+                homeBtn.className = 'btn btn-secondary btn-large';
+                homeBtn.textContent = '🏠 Volver al inicio';
+                homeBtn.style.marginTop = '16px';
+                homeBtn.addEventListener('click', () => this.returnToHome());
+                overlayContent.appendChild(homeBtn);
+            }
         }
         if (this.elements.overlayTitle) {
             this.elements.overlayTitle.textContent = title;
+        }
+    }
+
+    /**
+     * Regresa al estado inicial de instrucciones
+     */
+    returnToHome() {
+        this.stopVortexTimer();
+        this.state = 'idle';
+        this.score = 0;
+        this.lives = 3;
+        this.streak = 0;
+        this.level = 1;
+        this.completedPhrases = 0;
+        this.currentPhrase = null;
+        this.currentPhraseData = null;
+        this.inputHandler?.deactivate();
+        this.updateUI();
+
+        // Restaurar overlay de instrucciones
+        if (this.elements.overlay) {
+            this.elements.overlay.classList.remove('hidden');
+        }
+        if (this.elements.overlayTitle) {
+            this.elements.overlayTitle.textContent = '🎮 Cómo Jugar';
         }
     }
 

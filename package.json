@@ -1,7 +1,7 @@
 {
-  "name": "fluent-flash-verb-vortex",
+  "name": "the-gg-arcade",
   "version": "1.0.0",
-  "description": "Un juego web minimalista para practicar mecanografía y gramática del idioma inglés",
+  "description": "The GG Arcade (The Grammar Game Arcade): colección de minijuegos web para practicar mecanografía y gramática del inglés",
   "type": "module",
   "scripts": {
     "dev": "npx serve .",
